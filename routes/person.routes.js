@@ -61,18 +61,23 @@ router.delete('/api/persons/:id',(req,res)=>{
 
 router.post('/api/persons/', (req,res)=>{
   const {name, number} = req.body
-  if(name){
-    const newPerson ={
-      name, 
-      number,
-      id: Date.now()
+  const nameExists = persons.find(person=>person.name === name)
+  if(name && number){
+    if(!nameExists){
+      const newPerson ={
+        name, 
+        number,
+        id: Date.now()
+      }
+      persons = persons.concat(newPerson)
+      res.status(204).end()
+    }else{
+      res.status(400).send({error: "El nombre ya existe."}).end()
     }
-    persons = persons.concat(newPerson)
-    res.status(204).end()
+  }else{
+    res.status(400).send({error: "Faltan campos por ingresar."}).end()
   }
-  else{
-    res.status(404).end()
-  }
+ 
   
 
 })
