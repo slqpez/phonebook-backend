@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const persons = [
+let persons = [
     { 
       "name": "Arto Hellas", 
       "number": "040-123456",
@@ -27,7 +27,7 @@ const persons = [
 
 
 router.get('/', (req,res)=>{
-    res.send(`<a>Vínculo</a>`)
+    res.send(`<h1>Home</h1>`)
 })
 
 router.get('/api/persons', (req,res)=>{
@@ -49,6 +49,14 @@ router.get('/info', (req,res)=>{
     const date =new Date().toString();
     res.send(`<p>Phonebook has info for ${length} people.</p>
     <p>${date}</p>`)
+})
+
+
+router.delete('/api/persons/:id',(req,res)=>{
+  const id = Number(req.params.id)
+  persons = persons.filter(person=> person.id !== id)
+  console.log(req.params)
+  res.end()
 })
 
 module.exports= router
