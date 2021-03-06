@@ -34,5 +34,12 @@ router.get('/api/persons', (req,res)=>{
     res.json(persons)
 })
 
+router.get('/info', (req,res)=>{
+    const length = persons.length
+    const date =new Date().toString();
+    res.send(`<p>Phonebook has info for ${length} people.</p>
+    <p>${date}</p>`)
+})
+
 module.exports= router
 
