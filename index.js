@@ -9,11 +9,10 @@ app.use(morgan(':method :url :status :response-time ms - :res[content-length] :b
 
 
 app.use(express.json())
-const port = process.env.PORT 
 app.use(Router)
+const port = process.env.PORT 
+
 
 app.listen(port, ()=>{
     console.log(`Server running on http://localhost:${port}`);
 })
-
-module.exports = app
