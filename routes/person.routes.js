@@ -15,18 +15,15 @@ router.get("/api/persons", (req, res) => {
 
 router.get("/api/persons/:id", (req, res, next) => {
   const id = req.params.id;
-  Person.findById(id)
+  console.log(id)
+   Person.findById(id)
     .then((person) => {
-      res.json(person);
+      res.json(person).end()
     })
-    .cath((error) => {
-      next(error);
-    });
 });
 
 router.get("/info", async (req, res) => {
   const persons = await Person.find({});
-  console.log(persons);
 
   const length = persons.length;
   const date = new Date().toString();
