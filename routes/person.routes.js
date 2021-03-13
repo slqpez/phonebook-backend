@@ -17,10 +17,12 @@ router.get('/api/persons', (req,res)=>{
     
 })
 
-router.get('/api/persons/:id', (req, res)=>{
+router.get('/api/persons/:id', (req, res, next)=>{
   const id = req.params.id
   Person.findById(id).then(person=>{
     res.json(person)
+  }).cath(error=>{
+    next(error)
   })
 })
 
@@ -37,16 +39,18 @@ router.get('/info', async(req,res)=>{
 })
 
 
-router.delete('/api/persons/:id',(req,res)=>{
+router.delete('/api/persons/:id',(req,res, next)=>{
   const id = req.params.id
  Person.findByIdAndDelete(id).then(personDeleted=>{
   res.json(personDeleted)
   res.end()
+ }).catch(error=>{
+   next(error)
  })
  
 })
 
-router.post('/api/persons/', async(req,res)=>{
+router.post('/api/persons/', async(req,res, next)=>{
   const body = req.body
   const persons = await Person.find({})
   const nameExists = persons.find(person=>person.name === body.name)
@@ -59,6 +63,8 @@ router.post('/api/persons/', async(req,res)=>{
       person.save().then(person=>{
         res.json(person)
         res.status(204).end()
+      }).catch(error=>{
+        next(error)
       })
 
       
@@ -71,6 +77,13 @@ router.post('/api/persons/', async(req,res)=>{
  
   
 
+})
+
+
+//Middleware para manejar los errores.
+router.use( (error, req, res, next)=>{
+  res.send("Algo salió mal :c")
+  res.status(404).end()
 })
 
 module.exports= router
